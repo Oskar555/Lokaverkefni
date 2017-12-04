@@ -6,7 +6,7 @@
     <div id="Tasks" v-for='task in tasks'>
     	<ul>
     		<li>
-    			<label><input id="checkbox" type="checkbox" @click='taskStatus'>{{ task.title }}</label>
+    			<label><input id="checkbox" type="checkbox" @click='taskStatus(task.id)'>{{ task.title }}</label>
     		</li>
     	</ul>
     </div>
@@ -39,8 +39,7 @@ export default {
   	
   },
   methods: {
-  	AddTask: function(){
-
+  	AddTask(){
   		axios.post('http://fjolbraut.org/api/tasks?api_token=jb5ZdxkzaL8dNs5VVyM1mu2YQCp9p3DIFxU7qcap32KLrqr5spVXGFA20K2e', {
             title: this.task
          })
@@ -52,12 +51,19 @@ export default {
          });
   	},
   	taskStatus(id){
-		
 
+      var checked = this.task.completed;
+      if(checked){
+        this.tasks.push({
+              completed: true
+            });
+      }
+
+      console.log(id);
 
   		axios.post('http://fjolbraut.org/api/tasks/' + id + '/status?api_token=jb5ZdxkzaL8dNs5VVyM1mu2YQCp9p3DIFxU7qcap32KLrqr5spVXGFA20K2e')
-  		.then(function(response) {
-  			
+  		  .then(function(response) {
+  			   location.reload();
         })
         .catch(function(error) {
             console.log(error);
@@ -71,44 +77,43 @@ export default {
 </script>
 
 <style >
-
 body{
-	padding-top: 70px;
+	background-color: #fcfcfc;
+	padding-top: 50px;
 	font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
 }
-
 #app{
 	text-align: center;
 }
-
 #AddYourTask{
 	padding-bottom: 50px;
 	font-size: 60px;
 }
-
 button{
 	height: 50px;
 	width: 150px;
 	font-size: 20px;
+	color: #ffffff;
+	border: solid #000000 1px;
+	border-radius: 2em;
+	background-color: #000000;
 }
-
 #taskInput{
 	height: 50px;
-	width: 30em;
-	margin-right: 100px; 
+	width: 13.5em;
+	margin-right: 80px;
+	font-size: 25px;
+	border: solid grey 1px;
+	border-radius: 3px;
+	background-color: #fcfcfc;
 }
-
 ul{
 	list-style-type: none;
 	background-color: #ddffe2;
 	
-
 }
-
 #Tasks{
-	padding-right: 621px;
-	padding-left: 621px;
-
+	width: 640px;
+	margin-left: 440px;
 }
-
 </style>
